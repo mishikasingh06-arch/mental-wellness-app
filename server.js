@@ -1,22 +1,19 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
+require('dotenv').config();
+console.log("DEBUG URI =", process.env.MONGO_URI);
+const express = require('express');
+const mongoose = require('mongoose');
+
+console.log("Loaded URI:", process.env.MONGO_URI); // Debug check
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
-// Replace this with your real MongoDB URL
-const MONGO_URL = "your-mongodb-connection-url-here";
-
-mongoose.connect(MONGO_URL)
-  .then(() => console.log("✅ MongoDB Connected Successfully"))
-  .catch((err) => console.log("❌ Error connecting MongoDB:", err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch(err => console.error("❌ Mongo Connection Error:", err));
 
 app.get("/", (req, res) => {
-  res.send("Server is running & MongoDB is connected!");
+  res.send("Server Working");
 });
 
-app.listen(5000, () => {
-  console.log("🚀 Server running on port 5000");
-});
+app.listen(5000, () => console.log("🚀 Server running on port 5000"));
